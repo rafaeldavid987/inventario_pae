@@ -8,6 +8,14 @@
 
 @section('content')
 
+@if(session('success'))
+    <div class="alert alert-success">
+        {{ session('success') }}
+    </div>
+@endif
+
+
+
 <div class="card">
 
     <div class="card-header">
@@ -21,11 +29,13 @@
         <table class="table table-bordered table-striped">
 
             <thead>
-                <tr>
+            <tr>
                     <th>ID</th>
                     <th>Nombre</th>
+                    <th>Municipio</th>
                     <th>DANE</th>
                     <th>Estado</th>
+                    <th>Acciones</th>
                 </tr>
             </thead>
 
@@ -36,16 +46,23 @@
                 <tr>
                     <td>{{ $colegio->id }}</td>
                     <td>{{ $colegio->nombre }}</td>
+                    <td>{{ $colegio->municipio->nombre }}</td>
                     <td>{{ $colegio->dane }}</td>
                     <td>
                         {{ $colegio->estado ? 'Activo' : 'Inactivo' }}
+                    </td>
+                    <td>
+                        <a href="{{ route('colegios.edit', $colegio) }}"
+                            class="btn btn-warning btn-sm">
+                                Editar
+                        </a>
                     </td>
                 </tr>
 
             @empty
 
                 <tr>
-                    <td colspan="4" class="text-center">
+                    <td colspan="6" class="text-center">
                         No hay colegios registrados.
                     </td>
                 </tr>

@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\Maestros;
 
 use App\Http\Controllers\Controller;
-use Illuminate\Http\Request;
+use App\Http\Requests\ColegioRequest;
 use App\Models\Colegio;
 use App\Models\Municipio;
 
@@ -32,11 +32,14 @@ class ColegioController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
-    {
-        //
-    }
+    public function store(ColegioRequest $request)
+{
+    Colegio::create($request->validated());
 
+    return redirect()
+        ->route('colegios.index')
+        ->with('success', 'Colegio registrado correctamente.');
+}
     /**
      * Display the specified resource.
      */
@@ -50,17 +53,25 @@ class ColegioController extends Controller
      */
     public function edit(string $id)
     {
-        //
-    }
+    $colegio = Colegio::findOrFail($id);
 
+    $municipios = Municipio::orderBy('nombre')->get();
+
+    return view('maestros.colegios.edit', compact('colegio', 'municipios'));
+    }
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(ColegioRequest $request, string $id)
     {
-        //
-    }
+    $colegio = Colegio::findOrFail($id);
 
+    $colegio->update($request->validated());
+
+    return redirect()
+        ->route('colegios.index')
+        ->with('success', 'Colegio actualizado correctamente.');
+    }
     /**
      * Remove the specified resource from storage.
      */

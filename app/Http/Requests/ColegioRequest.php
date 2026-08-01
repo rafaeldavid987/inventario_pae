@@ -2,33 +2,33 @@
 
 namespace App\Http\Requests;
 
+
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
 
 class ColegioRequest extends FormRequest
 {
-    /**
-     * Determine if the user is authorized to make this request.
-     */
     public function authorize(): bool
     {
         return true;
     }
 
-    /**
-     * Reglas de validación.
-     */
     public function rules(): array
     {
         return [
-            'nombre' => 'required|string|max:200',
-            'nit' => 'nullable|string|max:30',
-            'dane' => 'required|string|max:20|unique:colegios,dane',
-            'direccion' => 'required|string|max:255',
-            'telefono' => 'nullable|string|max:30',
-            'email' => 'nullable|email|max:150',
-            'rector' => 'nullable|string|max:150',
-            'municipio_id' => 'required|exists:municipios,id',
-            'estado' => 'required|boolean',
+            'nombre'        => 'required|max:200',
+            'nit'           => 'nullable|max:30',
+            'dane' => [
+            'required',
+            'max:20',
+            Rule::unique('colegios', 'dane')->ignore($this->route('colegio')),
+            ],
+            'direccion'     => 'required|max:255',
+            'telefono'      => 'nullable|max:30',
+            'email'         => 'nullable|email|max:150',
+            'rector'        => 'nullable|max:150',
+            'municipio_id'  => 'required|exists:municipios,id',
+            'estado'        => 'required|boolean',
         ];
     }
 }
