@@ -9,25 +9,26 @@ return new class extends Migration
     /**
      * Run the migrations.
      */
-   public function up(): void
+    public function up(): void
 {
     Schema::create('colegios', function (Blueprint $table) {
         $table->id();
 
-        $table->string('codigo',20)->unique();
-        $table->string('dane',20)->nullable();
+        $table->string('nombre', 200);
+        $table->string('nit', 30)->nullable();
+        $table->string('dane', 20)->unique();
 
-        $table->string('nombre',150);
+        $table->string('direccion', 255);
 
-        $table->string('municipio',100);
+        $table->string('telefono', 30)->nullable();
+        $table->string('email', 150)->nullable();
 
-        $table->string('direccion',200)->nullable();
+        $table->string('rector', 150)->nullable();
 
-        $table->string('responsable',100)->nullable();
-
-        $table->string('telefono',20)->nullable();
-
-        $table->unsignedInteger('numero_estudiantes')->default(0);
+        $table->foreignId('municipio_id')
+              ->constrained('municipios')
+              ->cascadeOnUpdate()
+              ->restrictOnDelete();
 
         $table->boolean('estado')->default(true);
 

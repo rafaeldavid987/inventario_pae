@@ -3,18 +3,26 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class Colegio extends Model
 {
+    protected $table = 'colegios';
+
     protected $fillable = [
-        'codigo',
-        'dane',
         'nombre',
-        'municipio',
+        'nit',
+        'dane',
         'direccion',
-        'responsable',
         'telefono',
-        'numero_estudiantes',
+        'email',
+        'rector',
+        'municipio_id',
         'estado',
     ];
+
+    public function municipio(): BelongsTo
+    {
+        return $this->belongsTo(Municipio::class);
+    }
 }
