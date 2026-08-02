@@ -322,6 +322,12 @@ return [
         'icon' => 'fas fa-tags',
     ],
 
+    [
+    'text' => 'Productos',
+    'route' => 'productos.index',
+    'icon' => 'fas fa-box',
+    ],
+
 ],
 
     /*
