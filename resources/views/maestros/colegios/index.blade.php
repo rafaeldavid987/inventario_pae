@@ -19,10 +19,31 @@
 <div class="card">
 
     <div class="card-header">
+
+    <div class="d-flex justify-content-between align-items-center">
+
         <a href="{{ route('colegios.create') }}" class="btn btn-primary">
             Nuevo Colegio
         </a>
+
+        <form action="{{ route('colegios.index') }}" method="GET" class="d-flex">
+
+            <input
+                type="text"
+                name="buscar"
+                class="form-control me-2"
+                placeholder="Buscar por nombre o DANE..."
+                value="{{ $buscar }}">
+
+            <button class="btn btn-secondary">
+                Buscar
+            </button>
+
+        </form>
+
     </div>
+
+</div>
 
     <div class="card-body">
 
@@ -52,11 +73,46 @@
                         {{ $colegio->estado ? 'Activo' : 'Inactivo' }}
                     </td>
                     <td>
-                        <a href="{{ route('colegios.edit', $colegio) }}"
-                            class="btn btn-warning btn-sm">
-                                Editar
-                        </a>
-                    </td>
+
+                    <a href="{{ route('colegios.edit', $colegio) }}"
+                        class="btn btn-warning btn-sm">
+                        Editar
+                    </a>
+
+                    <form action="{{ route('colegios.destroy', $colegio) }}"
+                        method="POST"
+                        style="display:inline;">
+
+                        @csrf
+                        @method('DELETE')
+
+                        @if($colegio->estado)
+
+                            <button
+                                type="submit"
+                                class="btn btn-danger btn-sm"
+                                onclick="return confirm('¿Desea desactivar este colegio?')">
+
+                                Desactivar
+
+                            </button>
+
+                        @else
+
+                            <button
+                                type="submit"
+                                class="btn btn-success btn-sm"
+                                onclick="return confirm('¿Desea activar este colegio?')">
+
+                                Activar
+
+                            </button>
+
+                        @endif
+
+                    </form>
+
+                </td>
                 </tr>
 
             @empty

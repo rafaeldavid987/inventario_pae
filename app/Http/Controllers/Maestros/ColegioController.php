@@ -1,7 +1,7 @@
 <?php
 
 namespace App\Http\Controllers\Maestros;
-
+use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\ColegioRequest;
 use App\Models\Colegio;
@@ -12,11 +12,23 @@ class ColegioController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
 {
-    $colegios = Colegio::orderBy('nombre')->paginate(10);
+    $buscar = $request->buscar;
 
-    return view('maestros.colegios.index', compact('colegios'));
+    $colegios = Colegio::with('municipio')
+        ->when($buscar, function ($query) use ($buscar) {
+            $query->where('nombre', 'like', "%{$buscar}%")
+      ->orWhere('dane', 'like', "%{$buscar}%")
+      ->orWhereHas('municipio', function ($q) use ($buscar) {
+          $q->where('nombre', 'like', "%{$buscar}%");
+      });
+        })
+        ->orderBy('nombre')
+        ->paginate(10)
+        ->withQueryString();
+
+    return view('maestros.colegios.index', compact('colegios', 'buscar'));
 }
 
     /**
@@ -75,8 +87,20 @@ class ColegioController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
-    {
-        //
-    }
+   public function destroy(string $id)
+{
+    $colegio = Colegio::findOrFail($id);
+
+    $colegio->estado = !$colegio->estado;
+
+    $colegio->save();
+
+    $mensaje = $colegio->estado
+        ? 'Colegio activado correctamente.'
+        : 'Colegio desactivado correctamente.';
+
+    return redirect()
+        ->route('colegios.index')
+        ->with('success', $mensaje);
+}
 }
