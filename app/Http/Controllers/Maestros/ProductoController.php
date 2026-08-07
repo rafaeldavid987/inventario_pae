@@ -72,16 +72,20 @@ class ProductoController extends Controller
         ->with('success', 'Producto actualizado correctamente.');
 }
 
-    public function destroy(string $id)
+   public function destroy(string $id)
 {
     $producto = Producto::findOrFail($id);
 
-    $producto->update([
-        'estado' => false
-    ]);
+    $producto->estado = !$producto->estado;
+
+    $producto->save();
+
+    $mensaje = $producto->estado
+        ? 'Producto activado correctamente.'
+        : 'Producto desactivado correctamente.';
 
     return redirect()
         ->route('productos.index')
-        ->with('success', 'Producto desactivado correctamente.');
+        ->with('success', $mensaje);
 }
 }

@@ -307,7 +307,7 @@ return [
     ],
 
     [
-        'header' => 'MAESTROS',
+        'header' => 'INFORMACIÓN GENERAL',
     ],
 
     [

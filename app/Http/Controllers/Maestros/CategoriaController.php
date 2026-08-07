@@ -78,11 +78,15 @@ class CategoriaController extends Controller
     $categoria = Categoria::findOrFail($id);
 
     $categoria->update([
-        'estado' => false
+        'estado' => !$categoria->estado
     ]);
+
+    $mensaje = $categoria->estado
+        ? 'Categoría activada correctamente.'
+        : 'Categoría desactivada correctamente.';
 
     return redirect()
         ->route('categorias.index')
-        ->with('success', 'Categoría desactivada correctamente.');
+        ->with('success', $mensaje);
 }
 }
