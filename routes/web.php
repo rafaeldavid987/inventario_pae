@@ -6,6 +6,7 @@ use App\Http\Controllers\Maestros\ColegioController;
 use App\Http\Controllers\Maestros\CategoriaController;
 use App\Http\Controllers\Maestros\ProductoController;
 use App\Http\Controllers\Maestros\SedeController;
+use App\Http\Controllers\Maestros\DespachoController;
 
 Route::get('/', function () {
     return redirect('/dashboard');
@@ -20,6 +21,7 @@ Route::middleware(['auth'])->group(function () {
     Route::resource('categorias', CategoriaController::class);  
     Route::resource('productos', ProductoController::class);  
     Route::resource('sedes', SedeController::class);
+    Route::resource('despachos', DespachoController::class);
 
 });
 

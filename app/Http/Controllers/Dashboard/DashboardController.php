@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Colegio;
 use App\Models\Categoria;
 use App\Models\Producto;
+use App\Models\Sede;
 
 class DashboardController extends Controller
 {
@@ -17,7 +18,7 @@ class DashboardController extends Controller
 
         $totalProductos = Producto::where('estado', true)->count();
 
-        $totalSedes = 0;
+        $totalSedes = Sede::where('estado', true)->count();
 
         return view('dashboard.index', compact(
             'totalColegios',
